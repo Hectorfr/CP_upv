@@ -3,33 +3,31 @@
 // Para especificar por ejemplo que 'cout' pertenece a la librería estandar
 using namespace std;
 
+#define REP(i, a, b) for (int i = 0; i < b; ++i)
 
+int maxi(int x, int y){
+    if (x > y) return x;
+    return y;
+}
 int main() {
     int n; cin >> n;
-    int nums[n], nums1[n];
+    int m; cin >> m;
+    int S;
+    int cols[m] = {0}; //maximums of columns
+    int sum = 0, max = 0; //maximum of rows and result
 
-    for (int i = 0; i < n; i++){
-        int f; cin >> f;
-        if (i % 2 == 0){
-            nums[i] = f;
-        }else{
-            nums1[i] = f;
+    REP(i, 0, n){
+        REP(j, 0, m){
+            cin >> S;
+            sum += S;
+            cols[j] += S;
         }
+        max = maxi(max, sum);
+        sum = 0;
     }
-    for (int i = 0; i < n; i++){
-        int f; cin >> f;
-        if (i % 2 != 0){
-            nums[i] = f;
-        }else{
-            nums1[i] = f;
-        }    
+
+    REP(j, 0, m){
+        max = maxi(max, cols[j]);
     }
-    for (int i = 0; i < n; i++){
-        cout << nums[i]; cout << " ";
-    }
-    cout << endl;
-    for (int i = 0; i < n; i++){
-        cout << nums1[i]; cout << " ";
-    }
-    cout << endl;
+    cout << max;
 }

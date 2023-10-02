@@ -3,18 +3,28 @@
 // Para especificar por ejemplo que 'cout' pertenece a la librería estandar
 using namespace std;
 
+#define REP(i, a, b) for (int i = a; i < b; ++i)
+
 
 int main() {
-    int minN = 1000;
-    int maxN = -1000;
-
     int n; cin >> n;
+    int m; cin >> m;
+    char C[n][m];
 
-    for (int i = 0; i < n; i++){
-        int f; cin >> f;
-        minN = min(minN, f);
-        maxN = max(maxN, f);
+    REP(i, 0, n){
+        REP(j, 0, m){
+           cin >> C[i][j];
+        }
     }
-
-    cout << minN << " " << maxN;
+    REP(i, 1, n){
+        REP(j, 1, m){
+            if (C[i][j - 1] == C[i][j]){
+                if (C[i - 1][j - 1] == C[i - 1][j] && C[i - 1][j - 1] == C[i][j]){
+                    cout << "NO ORIGINAL";
+                    return 0;
+                }
+            }
+        }
+    }
+    cout << "ORIGINAL";
 }

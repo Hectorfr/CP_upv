@@ -3,28 +3,27 @@
 // Para especificar por ejemplo que 'cout' pertenece a la librería estandar
 using namespace std;
 
+#define REP(i, a, b) for (int i = a; i < b; ++i)
+
 
 int main() {
-    int P; cin >> P;
-    int V; cin >> V;
-    long int count = 0;
-    bool inside;
+    int n, m; cin >> n >> m;
+    int res[m][n];
+    int rowPointer = n-1;
 
+    REP(i, 0, n){
+        REP(j, 0, m){
+            cin >> res[j][rowPointer];
 
-    for (int i = 0; i < P; i++){
-        for (int j = 0; j < V; j++){
-            inside = false;
-            for (int z = 0; z < 2; z++){
-                char window; cin >> window;
-                if (window == '#'){
-                    inside = true;
-                }
-            }
-            if (inside) count++;
         }
+        rowPointer--;
+    }
+    REP(i, 0, m){
+        REP(j, 0, n){
+            cout << res[i][j] << " ";
+        }
+        cout << "\n";
+
     }
 
-    cout << count;
-
-    
 }
