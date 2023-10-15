@@ -3,69 +3,106 @@ using namespace std;
 #define REP(i, a, b) for (int i = a; i < b; ++i)
 #define ent cout << '\n'
 
-char arr[1000][1000];
+struct Instruction {
+    string action;
+    string reg;
+    int point;
+};
 
-void solve(int x, int y, int ex, int ey, char c){
+void inp(map <string, int>& registers, char chars[], int posChar, string reg){
+    char received = chars[posChar];
+    int ascii = int(received);
+    registers[reg] = ascii;
+}
 
-    if (ex-x < 4){
-        REP(i, x, ex+1) REP(j, y, ey+1) arr[i][j] = c;
-        return;
-    }
-
-    char nc = c == '.' ? '#' : '.';
-
-    REP(i, x, ex+1){
-        arr[i][y] = c;
-        arr[i][ey] = c;
-    }
-    REP(j, y, ey+1){
-        arr[x][j] = c;
-        arr[ex][j] = c;
-    }
-
-    if ((ex - x) % 2 == 0){
-
-        int my =  y + (ey - y) / 2;
-        REP(i, x, ex+1){
-            arr[i][my] = c;
-        }
-        int mx = x + (ex -x) / 2;
-        REP(j, y, ey+1){
-            arr[mx][j] = c;
-        }
-
-        solve(x+1, y+1, mx-1, my-1, nc); // upper left
-        solve(x+1, my+1, mx-1, ey-1, nc); //down left
-        solve(mx+1, y+1, ex-1, my-1, nc); //upper right
-        solve(mx+1, my+1, ex-1, ey-1, nc); //dowmn right
-    }else{
-        int my =  y+ (ey -y) / 2;
-        REP(i, x, ex+1){
-            arr[i][my] = c;
-            arr[i][my+1] = c;
-        }
-        int mx = x + (ex -x) / 2;
-        REP(j, y, ey+1){
-            arr[mx][j] = c;
-            arr[mx+1][j] = c;
-        }
-
-        solve(x+1, y+1, mx-1, my-1, nc); // upper left
-        solve(x+1, my+2, mx-1, ey-1, nc); //down left
-        solve(mx+2, y+1, ex-1, my-1, nc); //upper right
-        solve(mx+2, my+2, ex-1, ey-1, nc); //dowmn right
-    }
+void print(map <string, int> registers, string reg){
+    int received = registers[reg];
+    char ascii = char(received);
+    cout << ascii;
 
 }
 
 int main() {
     int n; cin >> n;
-    REP(i, 0, n) REP(j, 0, n) arr[i][j] = 'p';
-    solve(0, 0, n-1, n-1, '#');
-    REP(i, 0, n){
-        REP(j, 0, n){
-            cout << arr[i][j];
+
+    Instruction instructions[n];
+    map<string, int> registers;
+    stack<int> pila;
+
+    REP(i, 0, n) {
+        cin >> instructions[i].action;
+
+        if (instructions[i].action == "ret" || instructions[i].action == "halt"){
+            instructions[i].reg = "";
+            instructions[i].point = 0;       
+            if (i == n-1){
+                break;
+            }else continue;
         }
-        ent;
+
+        if (instructions[i].action == "call"){
+            instructions[i].reg = "";
+            cin >> instructions[i].point;
+            if (i == n-1){
+                break;
+            }else continue;
+        }
+
+        cin >> instructions[i].reg;
+        if (instructions[i].action == "dec"){
+            cin >> instructions[i].point;
+        }else instructions[i].point = 0;
+    }
+
+    //To put all chars in an array; BREAK if we find \n (ASCII 10)
+    int m; cin >> m; cin.ignore();
+    char chars[n];
+    int k = 0; bool found;
+    REP(i, 0, m){
+        found = false;
+        while(!found){
+            chars[k] = cin.get();
+            int aux = (int) chars[k];
+            if (aux == 10){found = true;}
+            k++;
+        }
+    }
+
+    int posChar = 0;
+    int i = 0;
+    while(i < n){
+
+        if (instructions[i].action == "inc"){
+            registers[instructions[i].reg]++;
+            i++;
+
+        }else if (instructions[i].action == "dec"){
+            if (registers[instructions[i].reg] > 0){
+                registers[instructions[i].reg]--;
+                i++;
+            }else if (registers[instructions[i].reg] == 0){
+                i = instructions[i].point;
+            }
+
+        }else if (instructions[i].action == "halt"){
+            break;
+
+        }else if (instructions[i].action == "inp"){
+            string reg = instructions[i].reg;
+            inp(registers, chars, posChar, reg);
+            posChar++;
+            i++;
+
+        }else if (instructions[i].action == "call"){
+            pila.push(i+1);
+            i = instructions[i].point;
+        }else if (instructions[i].action == "ret"){
+            i = pila.top();
+            pila.pop();
+        }else if (instructions[i].action == "print"){
+            string reg = instructions[i].reg;
+            print(registers, reg);
+            i++;
+        }
     }
 }
