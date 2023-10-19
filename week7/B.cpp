@@ -31,7 +31,6 @@ int main() {
         long long good = 0, bad = 0;
         solve(mazmorra, good, bad, 0, 0, m, n);
         cout << good << " " << bad << endl;
-
     }
     return 0;
 }
