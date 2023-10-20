@@ -6,25 +6,30 @@ using namespace std;
 
 
 int main() {
-    int n; cin >> n;
-    stack<string> books;
+    int n, m, h, x, y; cin >> n >> m >> h >> x >> y;
+    int mars[n][m];
+    int maxN = INT32_MIN, manhattan = INT32_MAX, x1 = -1, y1 = -1;
 
     REP(i, 0, n){
-        string s;cin >> s;
-        if (s == "Depositan"){
-            getline(cin, s);
-            s = s.substr(1);
-            books.push(s);
-        }else{
-            books.pop();
+        REP(j, 0, m){
+            cin >> mars[i][j];
+            maxN = max(maxN, mars[i][j]);
         }
     }
-    if (books.empty()){
-        cout << "No quedan libros" << endl;
+    int minN = maxN - h;
+
+    REP(i, 0, n){
+        REP(j, 0, m){
+            if (mars[i][j] > minN){
+                if (abs(i - x) + abs(j - y) < manhattan){
+                    manhattan = abs(i -x) + abs(j - y);
+                    x1 = i;
+                    y1 = j;
+
+                }
+            }
+        }
     }
-    while (!books.empty()){
-        cout << books.top() << endl;
-        books.pop();
-    }
+    cout << x1 << " " << y1 << endl;
     return 0;
 }
