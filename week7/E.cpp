@@ -4,34 +4,27 @@ using namespace std;
 #define ent cout << '\n'
 
 
-int main() {
-    int n, m, fila; cin >> n >> m;
-    queue<string> most[n+1];
-    char a;
+int solve(string& s, int left, int right){
+    if (right - left == 1) return s[left] == 'O' ? 1 : 0;
+        
 
-    REP(i, 0, m){
-        cin >> a >> fila;
-        if (a == 'a'){
-            string name;cin >> name;
-            most[fila].push(name);
-        }else if (a == 'p'){
-            cout << "- Personas en la fila " << fila << ": " << most[fila].size() << endl;
-        }else{
-            if (most[fila].empty()){
-                cout << "- No hay nadie en la fila " << fila << endl;
-            }else{
-                cout << "- Atendiendo a " << most[fila].front() << endl;
-                most[fila].pop();
-            }
-        }
+    int t = 0;
+    REP(i, left, right){
+        if (s[i] == 'O') t++;
     }
-    int count = 0;
-    REP(i, 1, n+1){
-        while(!most[i].empty()){
-            most[i].pop();
-            count++;
-        }
-    }
-    cout << "Personas por atender: " << count << endl;
+    if (t == 0) return 0;
+    else if (t == right-left) return t;
+
+
+
+    int mid = left + (right - left) / 2;
+    return max(solve(s, left, mid), solve(s, mid, right));
+    
+}
+
+int main() {
+    int l; cin >> l;
+    string s; cin >> s;
+    cout << solve(s, 0, l) << endl;
     return 0;
 }
