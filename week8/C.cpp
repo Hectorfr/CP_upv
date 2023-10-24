@@ -6,30 +6,15 @@ using namespace std;
 
 
 int main() {
-    int n, m, h, x, y; cin >> n >> m >> h >> x >> y;
-    int mars[n][m];
-    int maxN = INT32_MIN, manhattan = INT32_MAX, x1 = -1, y1 = -1;
+    int n, a, b, c; cin >> n >> a >> b >> c;
+    int arr[n+1]; memset(arr, 0, sizeof(arr));
+    REP(i, 0, n+1){
+        if (!arr[i] && i) continue;
+        if (i+a <= n) arr[i+a] = max(arr[i+a], arr[i]+1);
+        if (i+b <= n) arr[i+b] = max(arr[i+b], arr[i]+1);
+        if (i+c <= n) arr[i+c] = max(arr[i+c], arr[i]+1);
+    } 
 
-    REP(i, 0, n){
-        REP(j, 0, m){
-            cin >> mars[i][j];
-            maxN = max(maxN, mars[i][j]);
-        }
-    }
-    int minN = maxN - h;
-
-    REP(i, 0, n){
-        REP(j, 0, m){
-            if (mars[i][j] > minN){
-                if (abs(i - x) + abs(j - y) < manhattan){
-                    manhattan = abs(i -x) + abs(j - y);
-                    x1 = i;
-                    y1 = j;
-
-                }
-            }
-        }
-    }
-    cout << x1 << " " << y1 << endl;
+    cout << arr[n] << endl;
     return 0;
 }
