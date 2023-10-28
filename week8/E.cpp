@@ -3,28 +3,37 @@ using namespace std;
 #define REP(i, a, b) for (int i = a; i < b; ++i)
 #define ent cout << '\n'
 
-
-int solve(string& s, int left, int right){
-    if (right - left == 1) return s[left] == 'O' ? 1 : 0;
-        
-
-    int t = 0;
-    REP(i, left, right){
-        if (s[i] == 'O') t++;
-    }
-    if (t == 0) return 0;
-    else if (t == right-left) return t;
-
-
-
-    int mid = left + (right - left) / 2;
-    return max(solve(s, left, mid), solve(s, mid, right));
-    
-}
+#define MOD 1000000007
 
 int main() {
-    int l; cin >> l;
-    string s; cin >> s;
-    cout << solve(s, 0, l) << endl;
-    return 0;
+    int n,m; cin >> n >> m;
+    char c;
+    bool arr[n][m];
+    int dp[n][m];
+    memset(dp, 0, sizeof(dp));
+    REP(i, 0, n){ 
+        REP(j, 0, m){
+        cin >> c;
+        arr[i][j] = c == '.';
+        }
+    }
+
+    int i = 0;
+    while(i < n && arr[i][0]){
+        dp[i][0] = 1;
+        i++;
+    }
+    i = 0;
+    while(i < m && arr[0][i]){
+        dp[0][i] = 1;
+        i++;
+    }
+    
+    REP(i, 1, n){ 
+        REP(j, 1, m){
+            if (arr[i][j]) dp[i][j] = (dp[i-1][j] + dp[i][j-1]) % MOD;
+        }
+    }
+
+    cout << dp[n-1][m-1];
 }
