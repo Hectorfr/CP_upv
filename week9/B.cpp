@@ -1,25 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, a, b) for (int i = a; i <= b; ++i)
-#define ent cout << '\n'
+#define REP(i, a, b) for (int i = a; i < b; ++i)
+#define REPm(i, a, b) for (int i = a; i <= b; ++i)
+#define ent '\n'
 
-int fib[300000];
+#define MOD 1000000007
 
 int main() {
-    int t; cin >> t;
-    fib[0] = 0;
-    fib[1] = 1;
-    int count = 1;
-    for(int k = 0; k < t; k++){
-        int n; cin >> n;
-
-        if (count < n){
-            REP(i, count+1, n){
-                fib[i] = (fib[i-1] + fib[i-2]) % 1000000007;
-                count++;
+    int n, m; cin >> n >> m;
+    int aux;
+    int dp[n][m];
+    memset(dp, 0, sizeof(dp));
+    dp[0][0] = 1;
+    REP(i, 0, n){
+        REP(j, 0, m){
+            cin >> aux;
+            aux %= MOD;
+            if (dp[i][j]){ // if there is an accesible train station
+                if (i+aux < n && j < m) dp[i+aux][j] = (dp[i][j] + dp[i+aux][j]) % MOD;
+                if (i < n && j+aux < m) dp[i][j+aux] = (dp[i][j] + dp[i][j+aux]) % MOD;
             }
         }
-        cout << fib[n] << endl;
     }
-    return 0;
+
+    cout << dp[n-1][m-1];
+    
+
 }

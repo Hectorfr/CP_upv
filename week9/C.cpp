@@ -1,19 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i, a, b) for (int i = a; i < b; ++i)
-#define ent cout << '\n'
-
-
+#define REPm(i, a, b) for (int i = a; i <= b; ++i)
+#define ent '\n'
 
 int main() {
-    int n, a, b, c; cin >> n >> a >> b >> c;
-    int arr[n+1]; memset(arr, 0, sizeof(arr));
-    REP(i, 0, n+1){
-        if (!arr[i] && i) continue;
-        if (i+a <= n) arr[i+a] = max(arr[i+a], arr[i]+1);
-        if (i+b <= n) arr[i+b] = max(arr[i+b], arr[i]+1);
-        if (i+c <= n) arr[i+c] = max(arr[i+c], arr[i]+1);
+    int n, m; cin >> n >> m;
+    int aux;
+    int dp[n][m];
+    memset(dp, 0, sizeof(dp));
+    dp[0][0] = 1;
+    REP(i, 0, n){
+        REP(j, 0, m){
+            //CHECK DOWN JUMP && LEFT JUMP
+            if (dp[i][j]){ //if there is an accesible jump
+                if (i+2 < n && j+1 < m) dp[i+2][j+1] += dp[i][j];
+                if (i+1 < n && j+2 < m) dp[i+1][j+2] += dp[i][j];
+            }
+        }
     }
-    cout << arr[n] << endl;
-    return 0;
+
+
+    cout << dp[n-1][m-1];
+    
+
 }
