@@ -6,34 +6,26 @@ using namespace std;
 #define MOD 1000000007
 
 int main() {
-    int n,m; cin >> n >> m;
-    char c;
-    bool arr[n][m];
-    int dp[n][m];
-    memset(dp, 0, sizeof(dp));
-    REP(i, 0, n){ 
-        REP(j, 0, m){
-        cin >> c;
-        arr[i][j] = c == '.';
-        }
-    }
-
-    int i = 0;
-    while(i < n && arr[i][0]){
-        dp[i][0] = 1;
-        i++;
-    }
-    i = 0;
-    while(i < m && arr[0][i]){
-        dp[0][i] = 1;
-        i++;
-    }
+    int n; cin >> n;
+    int dp[n]; //how many numbers smaller do i have behind in order
+    int arr[n];
+    REP(i, 0, n) cin >> arr[i];
     
-    REP(i, 1, n){ 
-        REP(j, 1, m){
-            if (arr[i][j]) dp[i][j] = (dp[i-1][j] + dp[i][j-1]) % MOD;
+
+
+    REP(i, 0, n){
+        dp[i] = 1;
+        REP(j, 0, i){
+            if (arr[i] > arr[j]){
+                dp[i] = max(dp[i], dp[j] + 1);   
+            }
         }
     }
+     
 
-    cout << dp[n-1][m-1];
+    int ans = 0;
+    REP(i, 0, n){
+        ans = max(ans, dp[i]);
+    }
+    cout << ans;
 }
