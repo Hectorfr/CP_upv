@@ -7,23 +7,31 @@ using namespace std;
 #define MOD 1000000007
 
 int main() {
-    int n, m; cin >> n >> m;
-    int aux;
-    int dp[n][m];
-    memset(dp, 0, sizeof(dp));
-    dp[0][0] = 1;
-    REP(i, 0, n){
-        REP(j, 0, m){
-            cin >> aux;
-            aux %= MOD;
-            if (dp[i][j]){ // if there is an accesible train station
-                if (i+aux < n && j < m) dp[i+aux][j] = (dp[i][j] + dp[i+aux][j]) % MOD;
-                if (i < n && j+aux < m) dp[i][j+aux] = (dp[i][j] + dp[i][j+aux]) % MOD;
-            }
-        }
-    }
+    int t; cin >> t;
+    REP(i, 0, t){
+        int n, m; cin >> n >> m;
+        bool al[n][n];
+        memset(al, false, sizeof(al));
 
-    cout << dp[n-1][m-1];
+        int u, v;
+        REP(i, 0, m){
+            cin >> u >> v;
+            al[u-1][v-1] = true;
+            al[v-1][u-1] = true;
+        }
+
+        int count, x = 0, y = 0;
+        REP(i, 0, n){
+            count = 0;
+            REP(j, 0, n){
+                if (al[i][j]) count++;
+            }
+            if (count == 1) y++; //exterior nodes
+            else x++;
+        }
+
+        cout << x-1 << " " << y/(x-1) << endl;
+    }
     
 
 }

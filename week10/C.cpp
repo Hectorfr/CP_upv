@@ -6,7 +6,6 @@ using namespace std;
 
 int main() {
     int n, m; cin >> n >> m;
-    int aux;
     int dp[n][m];
     memset(dp, 0, sizeof(dp));
     dp[0][0] = 1;
