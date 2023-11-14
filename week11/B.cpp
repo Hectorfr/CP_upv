@@ -4,34 +4,19 @@ using namespace std;
 #define REPm(i, a, b) for (int i = a; i <= b; ++i)
 #define ent '\n'
 
-#define MOD 1000000007
+#define ll long long
 
 int main() {
     int t; cin >> t;
     REP(i, 0, t){
-        int n, m; cin >> n >> m;
-        bool al[n][n];
-        memset(al, false, sizeof(al));
-
-        int u, v;
-        REP(i, 0, m){
-            cin >> u >> v;
-            al[u-1][v-1] = true;
-            al[v-1][u-1] = true;
-        }
-
-        int count, x = 0, y = 0;
-        REP(i, 0, n){
-            count = 0;
-            REP(j, 0, n){
-                if (al[i][j]) count++;
-            }
-            if (count == 1) y++; //exterior nodes
-            else x++;
-        }
-
-        cout << x-1 << " " << y/(x-1) << endl;
+        ll n; cin >> n;
+        ll ans = n + 4*n; //interior constant + sides
+        ans += (n-2) * (n-1);//interior changes
+        cout << ans << endl;
     }
     
 
 }
+
+
+// 16+10 20+20 24+26

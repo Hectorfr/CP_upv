@@ -3,16 +3,18 @@ using namespace std;
 #define REP(i, a, b) for (int i = a; i < b; ++i)
 #define REPm(i, a, b) for (int i = a; i <= b; ++i)
 #define ent '\n'
+#define ll long long
 
 
 int main() {
-    int n; cin >> n;
-    int arr[n];
-    REP(i, 0, n){ cin >> arr[i]; arr[i]--;}//to make n ums correspond to pos
-    REP(i, 0, n){
-        if (arr[arr[arr[i]]] == i){ cout << "YES"; return 0;}
-    }
-    cout << "NO";
+    ll n; cin >> n;
+    ll a, b;
+    ll sq = sqrt(n);
+    sq *= sq; // the same as n if it's square leaves no remainder
+    b = -(sq-n); // 0 if equal
+    a = sqrt(sq) -b;
+
+    cout << a << " " << b << endl;
     
 
 }
