@@ -7,20 +7,22 @@ using namespace std;
 
 int main() {
     int n; cin >> n;
-    int count = 0;
-    int arr[n+2];
-    memset(arr, 0, sizeof(arr));
-    arr[0] = 0; arr[1] = 1; arr[2] = 1;
-    int aux;
-
-    for(int i = 3, j = 4; i < n; i++, j++){
-        aux = arr[i-1];
-        if (j % 2 == 0) aux = min(aux, arr[j/2-1]);
-        if (j % 3 == 0) aux = min(aux, arr[j/3-1]);
-        arr[i] = aux +1 ;
+    int arr[n];
+    REP(i, 0, n){
+        cin >> arr[i];
+        arr[i]--;
     }
-
-    cout << arr[n-1];
+    int dp[n], j;
+    REP(i, 0, n){
+        memset(dp, 0, sizeof(dp));
+        dp[i] = 1;
+        j = i; //index 
+        while(dp[j] == 1){
+            j = arr[j]; //index to who the student accuses
+            dp[j]++;
+        }
+        cout << j+1 << " ";
+    }
     
 
 }
