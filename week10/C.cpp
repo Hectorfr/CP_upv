@@ -4,23 +4,35 @@ using namespace std;
 #define REPm(i, a, b) for (int i = a; i <= b; ++i)
 #define ent '\n'
 
+int lake[1000][1000];
+
+int dfs(int n, int m, int x, int y){
+    
+    
+    int aux = lake[x][y];
+    lake[x][y] = 0;
+    if (!aux) return 0;
+    else return aux +
+        (x >= n-1 ? 0 : dfs(n, m, x+1, y)) +
+        (y >= m-1 ? 0 : dfs(n, m, x, y+1)) +
+        (x <= 0 ? 0 : dfs(n, m, x-1, y)) +
+        (y <= 0 ? 0 : dfs(n, m, x, y-1));
+
+}
+
 int main() {
     int n, m; cin >> n >> m;
-    int dp[n][m];
-    memset(dp, 0, sizeof(dp));
-    dp[0][0] = 1;
+    REP(i, 0, n) REP(j, 0, m) cin >> lake[i][j];
+
+    int ans = 0;
     REP(i, 0, n){
         REP(j, 0, m){
-            //CHECK DOWN JUMP && LEFT JUMP
-            if (dp[i][j]){ //if there is an accesible jump
-                if (i+2 < n && j+1 < m) dp[i+2][j+1] += dp[i][j];
-                if (i+1 < n && j+2 < m) dp[i+1][j+2] += dp[i][j];
-            }
+            if (lake[i][j]) ans = max(ans, dfs(n, m, i, j));
         }
     }
 
 
-    cout << dp[n-1][m-1];
+    cout << ans;
     
 
 }
