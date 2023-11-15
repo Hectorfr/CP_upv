@@ -3,26 +3,16 @@ using namespace std;
 #define REP(i, a, b) for (int i = a; i < b; ++i)
 #define REPm(i, a, b) for (int i = a; i <= b; ++i)
 #define ent '\n'
+#define ll long long
 
 
 int main() {
-    int n; cin >> n;
-    int arr[n];
-    REP(i, 0, n){
-        cin >> arr[i];
-        arr[i]--;
+    ll n; cin >> n;
+
+    while(n != 1){
+        if (n % 3 != 0){cout << "NO"; return 0;}
+        n /= 3;
     }
-    int dp[n], j;
-    REP(i, 0, n){
-        memset(dp, 0, sizeof(dp));
-        dp[i] = 1;
-        j = i; //index 
-        while(dp[j] == 1){
-            j = arr[j]; //index to who the student accuses
-            dp[j]++;
-        }
-        cout << j+1 << " ";
-    }
-    
+    cout << "YES";
 
 }
