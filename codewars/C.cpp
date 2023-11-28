@@ -1,45 +1,92 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, a, b) for (int i = a; i < b; ++i)
-#define ent cout << '\n'
-map <string, vector<string>> g;
+
+#define REP(i, a, b) for(int i = a; i < b; i++)
+#define ll long long
 
 
-string solve(string curr, string target){
-    if (curr == target) return target;
-    string path;
-    vector<string>:: iterator it;
-
-    for(it = g[curr].begin(); it != g[curr].end(); it++){
-        path = solve(*it, target);
-        if (path.size() > 0) return curr + "/" + path;
-    }
-    return "";
+void solve(){
 
 }
 
+int main(){
+    string t; cin >> t;
+    cout << t;
 
-int main() {
-    int n, m; cin >> n >> m;
-    string s, src, dest;
+    int t1 = stoi(t);
 
-    REP(i, 0, n){
-        cin >> s;
-        if (s[0] == '/'){
-            src = "";
-            dest = s.substr(1, 10);
-        }else{
-            src = s.substr(0, 10);
-            dest = s.substr(11, 20);
-        }
-        if (g.find(src) == g.end()){
-            g.insert(pair<string, vector<string>>("", vector<string>()));
-        }
-        g[src].push_back(dest);
+    int remain = (t1 % 23) - 1;
+    switch(remain){
+        case -1:
+            cout << "T";
+        break;
+        case 0:
+            cout << "R";
+        break;
+        case 1:
+            cout << "W";
+        break;
+        case 2:
+            cout << "A";
+        break;
+        case 3:
+            cout << "G";
+        break;
+        case 4:
+            cout << "M";
+        break;
+        case 5:
+            cout << "Y";
+        break;
+        case 6:
+            cout << "F";
+        break;
+        case 7:
+            cout << "P";
+        break;
+        case 8:
+            cout << "D";
+        break;
+        case 9:
+            cout << "X";
+        break;
+        case 10:
+            cout << "B";
+        break;
+        case 11:
+            cout << "N";
+        break;
+        case 12:
+            cout << "J";
+        break;
+        case 13:
+            cout << "Z";
+        break;
+        case 14:
+            cout << "S";
+        break;
+        case 15:
+            cout << "Q";
+        break;
+        case 16:
+            cout << "V";
+        break;
+        case 17:
+            cout << "H";
+        break;
+        case 18:
+            cout << "L";
+        break;
+        case 19:
+            cout << "C";
+        break;
+        case 20:
+            cout << "K";
+        break;
+        case 21:
+            cout << "E";
+        break;
+
     }
-    REP(i, 0, m){
-        cin >> s;        
-        cout << solve("", s) << endl;
-    }
-    return 0;
+
 }

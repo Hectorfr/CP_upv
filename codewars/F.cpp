@@ -6,15 +6,20 @@ using namespace std;
 
 
 void solve(){
+    int a, b, c; cin >> a >> b >> c;
+
+    if (a+b == c){
+        cout << "+";
+    }else cout << "-";
+
+    cout << endl;
 
 }
 
 int main(){
     int t; cin >> t;
-    if (t == 0){
-        cout << "false";
-        return 0;
+    while(t--){
+        solve();
     }
-    if (t % 2 == 0) cout << "false";
-    else cout << "true";
+
 }

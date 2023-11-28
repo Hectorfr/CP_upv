@@ -1,71 +1,94 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, a, b) for (int i = a; i < b; ++i)
-#define ent cout << '\n'
 
-char arr[1000][1000];
+#define REP(i, a, b) for(int i = a; i < b; i++)
+#define ll long long
 
-void solve(int x, int y, int ex, int ey, char c){
 
-    if (ex-x < 4){
-        REP(i, x, ex+1) REP(j, y, ey+1) arr[i][j] = c;
-        return;
-    }
-
-    char nc = c == '.' ? '#' : '.';
-
-    REP(i, x, ex+1){
-        arr[i][y] = c;
-        arr[i][ey] = c;
-    }
-    REP(j, y, ey+1){
-        arr[x][j] = c;
-        arr[ex][j] = c;
-    }
-
-    if ((ex - x) % 2 == 0){
-
-        int my =  y + (ey - y) / 2;
-        REP(i, x, ex+1){
-            arr[i][my] = c;
-        }
-        int mx = x + (ex -x) / 2;
-        REP(j, y, ey+1){
-            arr[mx][j] = c;
-        }
-
-        solve(x+1, y+1, mx-1, my-1, nc); // upper left
-        solve(x+1, my+1, mx-1, ey-1, nc); //down left
-        solve(mx+1, y+1, ex-1, my-1, nc); //upper right
-        solve(mx+1, my+1, ex-1, ey-1, nc); //dowmn right
-    }else{
-        int my =  y+ (ey -y) / 2;
-        REP(i, x, ex+1){
-            arr[i][my] = c;
-            arr[i][my+1] = c;
-        }
-        int mx = x + (ex -x) / 2;
-        REP(j, y, ey+1){
-            arr[mx][j] = c;
-            arr[mx+1][j] = c;
-        }
-
-        solve(x+1, y+1, mx-1, my-1, nc); // upper left
-        solve(x+1, my+2, mx-1, ey-1, nc); //down left
-        solve(mx+2, y+1, ex-1, my-1, nc); //upper right
-        solve(mx+2, my+2, ex-1, ey-1, nc); //dowmn right
-    }
+void solve(){
 
 }
 
-int main() {
-    int n; cin >> n;
-    REP(i, 0, n) REP(j, 0, n) arr[i][j] = 'p';
-    solve(0, 0, n-1, n-1, '#');
-    REP(i, 0, n){
-        REP(j, 0, n){
-            cout << arr[i][j];
-        }
-        ent;
+int main(){
+    string t; cin >> t;
+    string ans = t.substr(0, 8);
+    int t1 = stoi(ans);
+
+    int remain = (t1 % 23) - 1;
+    switch(remain){
+        case -1:
+            ans+= "T";
+        break;
+        case 0:
+            ans+= "R";
+        break;
+        case 1:
+            ans+= "W";
+        break;
+        case 2:
+            ans+= "A";
+        break;
+        case 3:
+            ans+= "G";
+        break;
+        case 4:
+            ans+= "M";
+        break;
+        case 5:
+            ans+= "Y";
+        break;
+        case 6:
+            ans+= "F";
+        break;
+        case 7:
+            ans+= "P";
+        break;
+        case 8:
+            ans+= "D";
+        break;
+        case 9:
+            ans+= "X";
+        break;
+        case 10:
+            ans+= "B";
+        break;
+        case 11:
+            ans+= "N";
+        break;
+        case 12:
+            ans+= "J";
+        break;
+        case 13:
+            ans+= "Z";
+        break;
+        case 14:
+            ans+= "S";
+        break;
+        case 15:
+            ans+= "Q";
+        break;
+        case 16:
+            ans+= "V";
+        break;
+        case 17:
+            ans+= "H";
+        break;
+        case 18:
+            ans+= "L";
+        break;
+        case 19:
+            ans+= "C";
+        break;
+        case 20:
+            ans+= "K";
+        break;
+        case 21:
+            ans+= "E";
+        break;
+
     }
+
+    if (ans == t) cout << "Si";
+    else cout << "No";
+
 }
