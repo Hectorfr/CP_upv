@@ -1,0 +1,178 @@
+namespace DSA {
+bool yn(bool cond, string tr = "YES", string fls = "NO") {
+    if (cond) cout << tr << endl;
+    else cout << fls << endl;
+    return cond;
+}
+
+template <typename T>
+T bs(T l, T r, const function<bool(T)>& cond, T e = 1e-10) {
+    while (l <= r) {
+        T step = !is_floating_point<T>::value;
+        T mid = l + (r - l)/2;
+        if (r-l <= e) break;
+        if (cond(mid)) {
+            if (mid == l || !cond(mid-step)) return mid;
+            r = mid - step;
+        } else l = mid + step;
+    }
+    return l;
+}
+ll gcd(ll a, ll b) { return __gcd(a, b); }
+ll lcm(ll a, ll b) { return a * (b / gcd(a, b)); }
+ll mod_pow(ll base, ll exp, ll mod = MOD) {
+    ll result = 1;
+    base = base % mod;
+    while (exp) {
+        if (exp&1) result = (result * base) % mod;
+        base = (base*base)%mod;
+        exp /= 2;
+    } return result;
+}
+ll mod_inv(ll a, ll mod) { return mod_pow(a, mod-2, mod); }
+vector<bool> er_sieve(ll n) {
+    vector<bool> is_prime(n+1, 1);
+    is_prime[0] = is_prime[1] = 0;
+    REP(i,2,sqrt(n) + 1) if (is_prime[i]) for (ll j = i*i; j <= n; j += i) is_prime[j] = 0;
+    return is_prime;
+}
+vii factorize(ll n) {
+    vii factors;
+    REP(i,1,sqrt(n)+1) {
+        ll cnt = 0;
+        while (n%i == 0) {
+            cnt++;
+            n /= i;
+        }
+        if (cnt) factors.push_back(make_pair(i,cnt));
+    }
+    if (n > 1) factors.push_back({n, 1LL});
+    return factors;
+}
+vi topo_sort(ll n, vvi& adj) {
+    vi indeg(n, 0);
+    REP(i,0,n) for(auto elem : adj[i]) indeg[elem]++;
+    qi q;
+    REP(i,0,n) if (indeg[i] == 0) q.push(i);
+    vi result;
+    while (!q.empty()) {
+        ll u = q.front(); q.pop();
+        result.PB(u);
+        for(auto elem : adj[u])  if (--indeg[elem] == 0) q.push(elem);
+    }
+    return result;
+}
+
+template <typename T>
+struct segtree {
+    vector<T> t, lz; T nt; ll n; function<T(T, T)> mop, uop;
+    segtree(ll sz, T net, function<T(T, T)> mfun, function<T(T, T)> ufun) : n(sz), nt(net), mop(mfun), uop(ufun), t(4*n, nt), lz(4*n, nt) {}
+    void propagate(ll node, ll s, ll e) {
+        if (lz[node] == nt) return;
+        t[node] = uop(t[node], lz[node]);
+        if (s != e) REP(i,0,2) lz[2*node + i] = uop(lz[2*node + i], lz[node]);
+        lz[node] = nt;
+    }
+    void build(const vector<T>& arr, ll node, ll s, ll e) {
+        if (s == e) t[node] = arr[s];
+        else {
+            build(arr, 2*node, s, (s+e)/2);
+            build(arr, 2*node + 1, (s+e)/2 + 1, e);
+            t[node] = mop(t[2*node], t[2*node + 1]);
+        }
+    }
+    void update(ll node, ll s, ll e, ll l, ll r, T val) {
+        propagate(node, s, e);
+        if (r < s || e < l) return;
+        if (l <= s && e <= r) lz[node] = uop(lz[node], val), propagate(node, s, e);
+        else {
+            update(2*node, s, (s+e)/2, l, r, val);
+            update(2*node + 1, (s+e)/2 + 1, e, l, r, val);
+            t[node] = mop(t[2*node], t[2*node + 1]);
+        }
+    }
+    T query(ll node, ll s, ll e, ll l, ll r) {
+        propagate(node, s, e);
+        if (r < s || e < l) return nt;
+        if (l <= s && e <= r) return t[node];
+        return mop(query(2*node, s, (s+e)/2, l, r), query(2*node + 1, (s+e)/2 + 1, e, l, r));
+    }
+    void build(const vector<T>& arr) { build(arr, 1, 0, n - 1); }
+    void update(ll l, ll r, T val) { update(1, 0, n - 1, l, r, val); }
+    T query(ll l, ll r) { return query(1, 0, n - 1, l, r); }
+};
+
+struct dsu_1 {
+    vi parent, size, value;
+    dsu_1(ll n, ll inival) : parent(n, -1), size(n, 1), value(n, inival) {}
+    ll find(ll x) { return parent[x] == -1 ? x : parent[x] = find(parent[x]); }
+    void unite(ll x, ll y, function<ll(ll, ll)> mop = [](ll a, ll b) { return a; }) {
+        ll rootX = find(x), rootY = find(y);
+        if (rootX == rootY) return;
+        if (size[rootX] > size[rootY]) {
+            parent[rootY] = rootX;
+            size[rootX] += size[rootY];
+            value[rootX] = mop(value[rootX], value[rootY]);
+        } else {
+            parent[rootX] = rootY;
+            size[rootY] += size[rootX];
+            value[rootY] = mop(value[rootX], value[rootY]);
+        }
+    }
+    bool connected(ll x, ll y) { return find(x) == find(y); }
+    ll get(ll x) { return value[find(x)]; }
+};
+
+
+struct dsu {
+    vi parent, size;
+    ll n, cnt;
+    dsu(ll n_){
+        n = cnt = n_;
+        parent.assign(n, 0);
+        iota(all(parent), 0);
+        size.assign(n, 1);
+    }
+    ll find(ll x) { return x == parent[x] ? x : parent[x] = find(parent[x]); }
+    bool unite(ll x, ll y) {
+        ll rootX = find(x), rootY = find(y);
+        if (rootX == rootY) return false;
+        if (size[rootX] > size[rootY]) {
+            parent[rootY] = rootX;
+            size[rootX] += size[rootY];
+        } else {
+            parent[rootX] = rootY;
+            size[rootY] += size[rootX];
+        }
+        cnt--;
+        return true;
+    }
+    bool connected(ll x, ll y) { return find(x) == find(y); }
+    int size(ll x) { return size[find(x)]; }
+};
+struct sparse {
+    vvi m;
+    sparse(vi& x){ // O(N + N*log(N))
+        ll n = x.size(), LOG = log2(n) + 1;
+        REP(i, 0, n) m[i][0] = x[i];
+
+        for(ll k = 1; k < LOG; k++){
+            for(ll i = 0; i+(1 << k)-1 < n; i++){
+                m[i][k] = gcd(m[i][k-1], m[i+(1 << (k-1))][k-1]);
+            }
+        }
+        
+    }
+    void build(ll LOG, ll n){ // O(N*log(N))
+    }
+    ll query(int L, int R){ // O(1)
+        ll len = R - L + 1;
+        // int k = 31 - __builtin_clz(len);
+        ll k = log2(len);
+        return gcd(m[L][k], m[R-(1LL << k)+1][k]);
+    }
+};
+
+};
+using namespace DSA;
+
