@@ -1,0 +1,29 @@
+// LIBS
+namespace LIBS {
+#define MOD 1000000007
+#define all(x) (x).begin(), (x).end()
+#define rall(x) (x).rbegin(), (x).rend()
+#define PB(x) push_back((x))
+#define F first
+#define S second
+#define ull unsigned long long
+#define ld long double
+typedef __int128_t tl;
+typedef pair<ll, ll> ii;
+typedef vector<ll> vi;
+typedef vector<ii> vii;
+typedef vector<vi> vvi;
+typedef map<ll,ll> mapi;
+typedef map<ll,vi> mapvi;
+typedef map<string,ll> mapsi;
+typedef set<ll> seti;
+typedef queue<ll> qi;
+typedef stack<ll> sti;
+#define REP(i,a,b) for (ll i = a; i < b; i++)
+#define REPV(i,a,b) for (ll i = a-1; i >= b; i--)
+#define setpr(x) cout << fixed << setprecision(x)
+#define ent cout << endl
+#define lb(x,y) lower_bound(all(x), y) - x.begin()
+#define ub(x,y) upper_bound(all(x), y) - x.begin()
+};
+using namespace LIBS;
